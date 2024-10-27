@@ -1,0 +1,18 @@
+<div class="pb-5 pt-3 pl-4">
+	<div class="flex flex-wrap justify-center gap-6">
+		@for (item of recipe; track item) {
+			<app-recipe-card/>
+		} @empty {
+			<div>No Recipe</div>
+		}
+	</div>
+
+
+	<div class="fixed bottom-10 right-10">
+		<button mat-fab
+				(click)="handleOpenCreateRecipeForm()"
+				style="background-color: rgb(218,103,128)">
+			<mat-icon>add</mat-icon>
+		</button>
+	</div>
+</div>

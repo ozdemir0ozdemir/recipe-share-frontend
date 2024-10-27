@@ -1,0 +1,126 @@
+<div class="flex justify-center h-screen items-center overflow-hidden">
+	<div class="container">
+
+		<div class="cover" [ngClass]="{'rotate-active':!isRegister}">
+			<div class="front">
+				<img
+					src="https://img.freepik.com/free-photo/zen-stones-balanced-beach-with-copy-space-sunrise-light-meditation-relaxation-ai-generative_123827-23548.jpg"
+					alt=""/>
+				<div class="text">
+					<span class="text-1">
+						Share, Savor and Create: Your Recipe Heaven Awaits!
+					</span>
+					<span class="text-2">
+						Let's get connected
+					</span>
+				</div>
+			</div>
+			<div class="back">
+				<img
+					src="https://img.freepik.com/free-photo/stacked-zen-stones-sand-background-art-balance-concept_53876-110628.jpg"
+					alt=""/>
+			</div>
+		</div>
+
+		<div class="form h-full">
+			<div class="form-content h-full">
+
+				<div class="signup-form">
+					<h1 class="text-lg font-bold text-center pb-8">Signup</h1>
+					<form [formGroup]="registrationForm"
+						  (ngSubmit)="handleRegister()">
+						<div class="mb-4">
+							<mat-form-field class="w-full">
+								<mat-label>Full Name</mat-label>
+								<input matInput
+									   [formControl]="registrationForm.controls.fullName"
+									   name="fullname"
+									   class="py-2 px-3 mt-1 "
+									   placeholder="enter your full name..."/>
+							</mat-form-field>
+						</div>
+
+						<div class="mb-4">
+							<mat-form-field class="w-full">
+								<mat-label>Email</mat-label>
+								<input matInput
+									   [formControl]="registrationForm.controls.email"
+									   name="email"
+									   class="py-2 px-3 mt-1 "
+									   placeholder="enter your email..."/>
+							</mat-form-field>
+						</div>
+
+						<div class="mb-4">
+							<mat-form-field class="w-full">
+								<mat-label>Password</mat-label>
+								<input matInput
+									   [formControl]="registrationForm.controls.password"
+									   type="password"
+									   name="fullname"
+									   class="py-2 px-3 mt-1 "
+									   placeholder="enter your password..."/>
+							</mat-form-field>
+						</div>
+
+						<div>
+							<button mat-raised-button class="w-full" type="submit">
+								Signup
+							</button>
+						</div>
+					</form>
+					<div class="flex items-center gap-3 justify-center">
+						have an account?
+						<button mat-button type="button" (click)="handleFormTypeChange()">sign in</button>
+
+					</div>
+
+				</div>
+
+				<div class="login-form">
+					<h1 class="text-lg font-bold text-center pb-8">Login</h1>
+					<form [formGroup]="loginForm"
+						  (ngSubmit)="handleLogin()">
+						<div class="mb-4">
+							<mat-form-field class="w-full">
+								<mat-label>Email</mat-label>
+								<input matInput
+									   [formControl]="loginForm.controls.email"
+									   name="email"
+									   class="py-2 px-3 mt-1 "
+									   placeholder="enter your email..."/>
+							</mat-form-field>
+						</div>
+
+						<div class="mb-4">
+							<mat-form-field class="w-full">
+								<mat-label>Password</mat-label>
+								<input matInput
+									   [formControl]="loginForm.controls.password"
+									   type="password"
+									   name="password"
+									   class="py-2 px-3 mt-1 "
+									   placeholder="enter your password..."/>
+							</mat-form-field>
+						</div>
+
+						<div>
+							<button mat-raised-button class="w-full" type="submit">
+								Login
+							</button>
+						</div>
+
+					</form>
+					<div class="flex items-center gap-3 justify-center">
+						Don't have an account?
+						<button mat-button type="button" (click)="handleFormTypeChange()">register</button>
+						<button mat-button type="button" (click)="testRecipes()">recipes</button>
+						<button mat-button type="button" (click)="testMe()">Me</button>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
