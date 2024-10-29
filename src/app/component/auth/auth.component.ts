@@ -67,11 +67,24 @@ export class AuthComponent {
 
 
 	handleRegister(): void {
-		let email: string = "info@angular.com";
-		let fullName: string = "angular 18";
-		let password: string = "password";
+		let email: string = "";
+		let fullName: string = "";
+		let password: string = "";
 
+		if (this.registrationForm.controls.email.value &&
+			this.registrationForm.controls.fullName.value &&
+			this.registrationForm.controls.password.value) {
 
+			email = this.registrationForm.controls.email.value;
+			fullName = this.registrationForm.controls.fullName.value;
+			password = this.registrationForm.controls.password.value;
+		}
+
+		if (email === "" || fullName === "" || password === "") {
+			return;
+		}
+
+		// TODO: if success change form type to login
 		this.authService
 			.registerUser(new RegisterRequest(email, fullName, password))
 			.subscribe({

@@ -1,16 +1,15 @@
 <p >
 	<!-- primary, accent, warn -->
-	<mat-toolbar class="flex items-center justify-between" style="background-color: rgb(218,103,128)">
+	<mat-toolbar class="flex items-center justify-between" style="background-color: rgb(223,13,96); color:white;">
 		<div>
 			<span>My App</span>
 		</div>
 		<div>
 			<span class="example-spacer"></span>
-			<button mat-icon-button>
-				<mat-icon>favorite</mat-icon>
-			</button>
-			<button mat-icon-button>
-				<mat-icon>share</mat-icon>
+			<button mat-raised-button
+					(click)="handleLogout()"
+					style="background-color: rgba(0, 0, 0, 0.1); color:white;">
+				{{this.authService.authenticatedUser.getValue()?.fullName}}
 			</button>
 		</div>
 

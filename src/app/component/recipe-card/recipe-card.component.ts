@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {
 	MatCard,
 	MatCardActions,
@@ -11,6 +11,7 @@ import {MatButton, MatIconButton, MatMiniFabButton} from '@angular/material/butt
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import {EditRecipeFormComponent} from '../edit-recipe-form/edit-recipe-form.component';
+import {RecipeDto} from '../../service/dto/recipe-dto';
 
 @Component({
 	selector: 'app-recipe-card',
@@ -31,6 +32,9 @@ import {EditRecipeFormComponent} from '../edit-recipe-form/edit-recipe-form.comp
 	styleUrl: './recipe-card.component.scss'
 })
 export class RecipeCardComponent {
+
+	@Input()
+	recipe: RecipeDto | null = null;
 
 	constructor(private dialog: MatDialog) {
 	}

@@ -5,6 +5,7 @@ import {FooterComponent} from './component/footer/footer.component';
 import {RecipeCardComponent} from './component/recipe-card/recipe-card.component';
 import {HomePageComponent} from './component/home-page/home-page.component';
 import {AuthComponent} from './component/auth/auth.component';
+import {AuthService} from './service/auth.service';
 
 
 @Component({
@@ -22,4 +23,8 @@ import {AuthComponent} from './component/auth/auth.component';
 	styleUrl: './app.component.scss'
 })
 export class AppComponent {
+
+	constructor(protected authService: AuthService) {
+		authService.me();
+	}
 }

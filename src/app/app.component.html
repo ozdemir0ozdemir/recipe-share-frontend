@@ -1,15 +1,16 @@
 <div>
-
 	<div class="min-h-[91vh]">
-<!--		<app-navbar/>-->
-<!--		<app-home-page/>-->
-		<app-auth/>
+		@if (this.authService.authenticatedUser.getValue()) {
+			<app-navbar/>
+			<app-home-page/>
+		} @else {
+			<app-auth/>
+		}
 	</div>
 
 	<div>
-<!--		<app-footer/>-->
+		@if (this.authService.authenticatedUser.getValue()) {
+			<app-footer/>
+		}
 	</div>
-
-
-
 </div>
