@@ -1,69 +1,40 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {BehaviorSubject, Observable, tap} from 'rxjs';
-import {AuthResponse} from './response/auth-response';
-import {CreateUserRequest} from './request/create-user-request';
+import {HttpClient} from '@angular/common/http';
+import {Observable, tap} from 'rxjs';
+import {environment} from '../../environments/environment';
 import {LoginRequest} from './request/login-request';
-import {MeResponse} from './response/me-response';
+import {Response} from './response/response';
+import {RegisterRequest} from './request/register-request';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AuthService {
 
-	private readonly BASE_URL: string = "http://localhost:8080/api/v1";
-	private readonly REGISTER_URL: string = `${this.BASE_URL}/auth`;
-	private readonly LOGIN_URL: string = `${this.BASE_URL}/auth/login`;
-	private readonly ME_URL: string = `${this.BASE_URL}/users/me`;
+	private readonly REGISTER_URL: string = `${environment.apiUrl}/auth`;
+	private readonly LOGIN_URL: string = `${environment.apiUrl}/auth/login`;
 
-	private readonly JWT: string = "JWT_TOKEN";
 
-	authSubject: BehaviorSubject<MeResponse> =
-		new BehaviorSubject<MeResponse>(new MeResponse("", ""));
-
-	constructor(private httpClient: HttpClient) {
+	constructor(private http: HttpClient) {
 	}
 
-	getAllUsers(): Observable<any> {
-		const headers: HttpHeaders = new HttpHeaders({
-			Authorization: `Bearer ${localStorage.getItem(this.JWT)}`
-		});
-
-		return this.httpClient.get<any>(`${this.BASE_URL}/users`, {headers: headers})
-			.pipe(tap({
-				next: value => console.log(value)
-			}));
-	}
-
-	registerUser(createUserRequest: CreateUserRequest): Observable<AuthResponse> {
-		return this.httpClient.post<AuthResponse>(
+	registerUser(request: RegisterRequest): Observable<Response<null>> {
+		return this.http.post<Response<null>>(
 			this.REGISTER_URL,
-			createUserRequest
+			request
 		);
 	}
 
-	login(loginRequest: LoginRequest): Observable<AuthResponse> {
-		return this.httpClient.post<AuthResponse>(this.LOGIN_URL, loginRequest)
+	login(request: LoginRequest): Observable<Response<string>> {
+		return this.http.post<Response<string>>(this.LOGIN_URL, request)
 			.pipe(tap({
-				next: (auth:AuthResponse) => localStorage.setItem(this.JWT, auth.jwtToken)
+				next: (response: Response<string>) => localStorage.setItem(environment.JWT, response.data)
 			}));
 	}
 
-	me(): Observable<MeResponse> {
-		const headers: HttpHeaders = new HttpHeaders({
-			Authorization: `Bearer ${localStorage.getItem(this.JWT)}`
-		});
-
-		return this.httpClient
-			.get<MeResponse>(this.ME_URL, {headers: headers})
-			.pipe(tap({
-				next: (me: MeResponse) => this.authSubject.next(me)
-			}));
-	}
 
 	logout(): void {
 		localStorage.clear();
-		this.authSubject.next(new MeResponse("", ""));
 	}
 
 }

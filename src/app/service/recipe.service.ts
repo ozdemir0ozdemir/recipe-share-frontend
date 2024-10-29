@@ -1,38 +1,50 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
+import {PagedResponse} from './response/paged-response';
+import {RecipeDto} from './dto/recipe-dto';
+import {Response} from './response/response';
+import {CreateRecipeRequest} from './request/create-recipe-request';
+import {Utility} from './utility';
+import {UpdateRecipeRequest} from './request/update-recipe-request';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class RecipeService {
 
-	private readonly BASE_URL: string = "http://localhost:8080/api/v1";
-	private readonly RECIPES_URL: string = `${this.BASE_URL}/recipes`;
+	private readonly RECIPES_URL: string = `${environment.apiUrl}/recipes`;
 
-	private readonly JWT: string = "JWT_TOKEN";
-
-	recipes: BehaviorSubject<any> = new BehaviorSubject<any>({
-		recipes: [],
-	});
-
-
-	constructor(private httpClient: HttpClient) {
+	constructor(private http: HttpClient) {
 	}
 
-	// FIXME: pagination when getting all recipes
-	getAllRecipes(): Observable<any> {
-				return this.httpClient
-			.get<any>(this.RECIPES_URL, {headers: this.getHttpHeader()})
-			.pipe(tap({
-				next: value => this.recipes.next(value.content)
-			}));
+	getAllRecipes(page: number = 1, pageSize: number = 5): Observable<PagedResponse<RecipeDto[]>> {
+		return this.http.get<PagedResponse<RecipeDto[]>>(this.RECIPES_URL)}
+
+	getRecipeById(recipeId: number): Observable<Response<RecipeDto>> {
+		return this.http.get<Response<RecipeDto>>(`${this.RECIPES_URL}/${recipeId}`);
+	}
+
+	createRecipe(request: CreateRecipeRequest): Observable<Response<RecipeDto>> {
+		return this.http.post<Response<RecipeDto>>(
+			`${this.RECIPES_URL}`,
+			request,
+			{headers: Utility.getHttpHeaders()}
+		);
+	}
+
+	updateRecipe(request: UpdateRecipeRequest, recipeId: number): Observable<Response<RecipeDto>> {
+		return this.http.patch<Response<RecipeDto>>(
+			`${this.RECIPES_URL}/${recipeId}`,
+			request,
+			{headers: Utility.getHttpHeaders()});
+	}
+
+	deleteRecipe(recipeId: number): Observable<void> {
+		return this.http.delete<void>(`${this.RECIPES_URL}/${recipeId}`, {headers: Utility.getHttpHeaders()});
 	}
 
 
-	private getHttpHeader(): HttpHeaders {
-		return new HttpHeaders({
-			'Authorization':`Bearer ${localStorage.getItem(this.JWT)}`
-		});
-	}
+
 }

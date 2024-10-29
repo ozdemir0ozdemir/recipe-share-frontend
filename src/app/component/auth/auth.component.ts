@@ -9,9 +9,11 @@ import {LoginFormGroup} from '../form-model/login-form-group';
 import {RegisterFormGroup} from '../form-model/register-form-group';
 import {AuthService} from '../../service/auth.service';
 import {LoginRequest} from '../../service/request/login-request';
-import {AuthResponse} from '../../service/response/auth-response';
 import {RecipeService} from '../../service/recipe.service';
-import {MeResponse} from '../../service/response/me-response';
+import {Response} from '../../service/response/response';
+import {RegisterRequest} from '../../service/request/register-request';
+import {UserService} from '../../service/user.service';
+
 
 @Component({
 	selector: 'app-auth',
@@ -38,11 +40,12 @@ export class AuthComponent {
 	isRegister: boolean = false;
 
 	constructor(private authService: AuthService,
+				private userService: UserService,
 				private recipeService: RecipeService) {
 	}
 
 	handleLogin(): void {
-			let email: string = "";
+		let email: string = "";
 		let password: string = "";
 
 		if (this.loginForm.controls.email.value && this.loginForm.controls.password.value) {
@@ -57,23 +60,24 @@ export class AuthComponent {
 		this.authService
 			.login(new LoginRequest(email, password))
 			.subscribe({
-				next: (value: AuthResponse) => console.log(value),
+				next: (response: Response<string>) => console.log(response),
 				error: err => console.log(err)
 			})
 	}
 
-	testRecipes(): void {
-		this.authService.getAllUsers().subscribe();
-	}
-
-	testMe(): void {
-		this.authService.me().subscribe({
-			next: (me: MeResponse) => console.log(me)
-		});
-	}
 
 	handleRegister(): void {
-		console.log("register: ", this.registrationForm.value);
+		let email: string = "info@angular.com";
+		let fullName: string = "angular 18";
+		let password: string = "password";
+
+
+		this.authService
+			.registerUser(new RegisterRequest(email, fullName, password))
+			.subscribe({
+				next: (response: Response<null>) => console.log(response),
+				error: err => console.log(err)
+			})
 	}
 
 	handleFormTypeChange(): void {
